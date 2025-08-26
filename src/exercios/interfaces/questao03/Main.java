@@ -8,8 +8,8 @@ package exercios.interfaces.questao03;
 
 public class Main {
     public static void main(String[] args) {
-        CartaoCredito cartao = new CartaoCredito();
-        Pix pix = new Pix();
+        Pagamento cartao = new CartaoCredito();
+        Pagamento pix = new Pix();
 
         double valorPagamento = 100.0;
 
