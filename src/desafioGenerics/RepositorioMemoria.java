@@ -2,6 +2,7 @@ package desafioGenerics;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public abstract class RepositorioMemoria<T> implements Repositorio<T> {
     protected List<T> elementos = new ArrayList<>();
     protected int nextId = 1;
