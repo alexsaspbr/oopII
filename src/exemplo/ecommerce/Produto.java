@@ -5,7 +5,6 @@ import java.util.Comparator;
 
 public class Produto implements Comparable<Produto> {
 
-
     private Integer id;
     private String descricao;
     private BigDecimal valor;

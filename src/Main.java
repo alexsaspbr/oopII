@@ -1,16 +1,40 @@
-import exemplo.ecommerce.Produto;
-import exemplo.imposto.ICMS;
-import exemplo.imposto.IOF;
-import exemplo.imposto.Imposto;
-import exemplo.imposto.ImpostoRecord;
+import ExercicioFinal6.envio.GerenciadorEnvio;
+import ExercicioFinal6.model.Pedido;
+import ExercicioFinal6.model.Produto;
+import ExercicioFinal6.pagamento.CartaoCredito;
+import ExercicioFinal6.pagamento.MetodoPagamento;
+import ExercicioFinal6.pagamento.ProcessarPagamento;
+import ExercicioFinal6.repository.JpaPedidoRepositorio;
+import ExercicioFinal6.repository.PedidoRepositorio;
+import ExercicioFinal6.service.PedidoService;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
+        PedidoRepositorio pedidoRepositorio = new JpaPedidoRepositorio();
 
-        //Perecivel produto = new Produto();
+        MetodoPagamento pagamentoCartao = new CartaoCredito();
+        ProcessarPagamento processadorPagamento = new ProcessarPagamento(pagamentoCartao);
+
+        GerenciadorEnvio gerenciadorEnvio = new GerenciadorEnvio();
+
+        PedidoService pedidoService = new PedidoService(pedidoRepositorio, processadorPagamento, gerenciadorEnvio);
+
+        Produto motoserra = new Produto("Motosserra Husqvarna", 1500.00);
+        Produto capacete = new Produto("Capacete de Segurança", 300.00);
+        Produto luvas = new Produto("Luvas Anticorte", 50.00);
+
+        List<Produto> itensPedido = List.of(motoserra, capacete, luvas);
+
+        Pedido pedido = new Pedido(itensPedido, "Rua das Flores, 123 - São Paulo/SP");
+
+        // fluxo do caso de uso
+        pedidoService.criarNovoPedido(pedido);
+        pedidoService.processarPagamento(1L);
+        pedidoService.despacharPedido(1L);
+
+   /*     //Perecivel produto = new Produto();
         //processar(produto);
 
         //ICMS, IOF
@@ -49,6 +73,6 @@ public class Main {
     }
 
     public static void calcular(Imposto imposto) {
-        imposto.imprimir();
+        imposto.imprimir();*/
     }
 }
