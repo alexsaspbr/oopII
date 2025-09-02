@@ -7,7 +7,7 @@ public class Main {
         // Criar pedido
         Order order = new Order("ORD-001", "joao@email.com", 150.50);
 
-        // Demonstrando diferentes combinações (OCP)
+       
 
         // Caso 1: Cartão + Correios + Email
         System.out.println("1. Pagamento com cartão + Correios + Email:");
