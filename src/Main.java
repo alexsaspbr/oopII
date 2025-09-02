@@ -1,54 +1,39 @@
-import exemplo.ecommerce.Produto;
-import exemplo.imposto.ICMS;
-import exemplo.imposto.IOF;
-import exemplo.imposto.Imposto;
-import exemplo.imposto.ImpostoRecord;
-
-import java.math.BigDecimal;
-import java.util.*;
+import desafio6solid.*;
 
 public class Main {
     public static void main(String[] args) {
+        System.out.println("=== SISTEMA SIMPLIFICADO DE PEDIDOS ===\n");
 
-        //Perecivel produto = new Produto();
-        //processar(produto);
+        // Criar pedido
+        Order order = new Order("ORD-001", "joao@email.com", 150.50);
 
-        //ICMS, IOF
+        // Demonstrando diferentes combinações (OCP)
 
-        Imposto IOF = new IOF(1.5D);
-        Imposto ICMS = new ICMS(2.7D);
+        // Caso 1: Cartão + Correios + Email
+        System.out.println("1. Pagamento com cartão + Correios + Email:");
+        Payment cardPayment = new CreditCardPayment("1234567812345678");
+        Shipping correios = new CorreiosShipping();
+        Notification email = new EmailNotification();
 
-        //new IVA(27D);
+        OrderProcessor processor1 = new OrderProcessor(cardPayment, correios, email);
+        processor1.process(order);
 
-        //calcular(IOF);
-        calcular(ICMS);
-        //calcular(IVA);
+        System.out.println();
 
-        ImpostoRecord iva = new ImpostoRecord("2", "IVA");
-        //iva.taxa();
+        // Caso 2: PIX + Expresso + SMS (novos métodos sem alterar código existente)
+        System.out.println("2. Pagamento com PIX + Expresso + SMS:");
+        Payment pixPayment = new PixPayment("123.456.789-00");
+        Shipping express = new ExpressShipping();
+        Notification sms = new SMSNotification();
 
-        Comparator<Produto> compImposto = Comparator.comparing(Produto::getId)
-                                                    .thenComparing(Produto::getValor);
-        //compImposto.compare(new Produto(), new Produto());
+        OrderProcessor processor2 = new OrderProcessor(pixPayment, express, sms);
+        processor2.process(order);
 
-        Integer numero = Integer.valueOf(10);
-        System.out.printf("O numeros sao iguais %d", numero.compareTo(Integer.valueOf(15)));
+        System.out.println();
 
-
-
-
-
-        List<Produto> produtos = new ArrayList<>();
-        produtos.add(new Produto(2,  "TV 55", new BigDecimal(4500)));
-        produtos.add(new Produto(1,  "PS 5", new BigDecimal(3800)));
-        Collections.sort(produtos);
-        Collections.sort(produtos, Comparator.comparing(Produto::getValor));
-        produtos.sort((p1, p2) -> p1.getId().compareTo(p2.getId()));
-
-
-    }
-
-    public static void calcular(Imposto imposto) {
-        imposto.imprimir();
+        // Caso 3: Mix de implementações
+        System.out.println("3. Pagamento com cartão + Expresso + SMS:");
+        OrderProcessor processor3 = new OrderProcessor(cardPayment, express, sms);
+        processor3.process(order);
     }
 }
